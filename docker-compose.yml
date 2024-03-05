@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  caddy:
+    depends_on:
+      - backend
+    build:
+      dockerfile: Dockerfile
+      context: "./caddyServer"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+
+  backend:
+    env_file:
+      - .env
+    build: 
+      dockerfile: Dockerfile
+      context: "./"
+
+volumes:
+  caddy_data: 
+    external: true
+  caddy_config:
